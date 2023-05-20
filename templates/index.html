@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ATG Task(LLM)</title>
+        <style>
+            #chat-history {
+                list-style: none;
+                padding: 0;
+            }
+            #chat-history li {
+                margin-bottom: 10px;
+            }
+            .user-message {
+                text-align: right;
+            }
+            .bot-message {
+                text-align: left;
+            }
+        
+           
+        </style>
+    </head>
+    <body>
+        <div class="msgs">
+        <h1>ATG Task 1(LLM)</h1>
+        <div id="conversation">
+            {% for entry in chat_messages %}
+                <p><strong>{{ entry.sender }}:</strong> {{ entry.message }}</p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="input">
+        <form method="post">
+            {% csrf_token %}
+            <label for="text">Text:</label><br>
+            <textarea name="text" id="text" rows="4" cols="50"></textarea><br>
+            <input type="submit" value="Submit">
+        </form>
+        </div>
+        
+    </body>
+</html>

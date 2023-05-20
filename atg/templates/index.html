@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot</title>
+</head>
+<body>
+    <h1>Chatbot</h1>
+    <div id="chatbox">
+        <ul id="chat"></ul>
+    </div>
+    <form id="input-form" method="POST">
+        {% csrf_token %}
+        <input type="text" id="input-text" name="text">
+        <button type="submit">Send</button>
+    </form>
+
+    <script>
+        const form = document.querySelector('#input-form');
+        const inputText = document.querySelector('#input-text');
+        const chat = document.querySelector('#chat');
+
+        form.addEventListener('submit', event => {
+            event.preventDefault();
+            const text = inputText.value;
+            inputText.value = '';
+
+            const li = document.createElement('li');
+            li.textContent = `You: ${text}`;
+            chat.appendChild(li);
+
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ text })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const li = document.createElement('li');
+                li.textContent = `Bot: ${data.prediction}`;
+                chat.appendChild(li);
+            });
+        });
+    </script>
+</body>
+</html>
